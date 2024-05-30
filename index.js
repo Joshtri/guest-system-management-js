@@ -8,9 +8,7 @@ import loginRoute from './routes/login.route.js';
 import bodyParser from 'body-parser';
 import dashboardRoute from './routes/dashboard.route.js';
 import session from 'express-session';
-import FileStore from 'session-file-store';
-
-const FileStoreSession = FileStore(session);
+import MongoStore from 'connect-mongo';
 
 // Load environment variables from .env file
 config();
@@ -26,27 +24,33 @@ const app = express();
 app.set('view engine', 'ejs');
 
 // Middleware to parse JSON requests
-
-// Gunakan middleware untuk membaca JSON
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 app.use(bodyParser.json());
 app.use(express.json());
 
-// Session middleware
+// process.env.SESSION_SECRET || 
+// Session middleware with MongoDB
 app.use(session({
-  store: new FileStoreSession({
-      path: './session',
-      ttl: 3600, // Time to live in seconds
-      retries: 5 // Number of retries to get session data
-  }),
   secret: 'your-secret-key',
   resave: false,
-  saveUninitialized: true,
-  cookie: {
-      maxAge: 3600000 // Cookie expiration in milliseconds
-  }
+  saveUninitialized: false,
+  store: MongoStore.create({
+    mongoUrl: process.env.MONGODB_URI, // Replace with your MongoDB connection string
+    collectionName: 'sessions'
+  })
 }));
+
+
+// Logging middleware to log session data
+app.use((req, res, next) => {
+  console.log('Session ID:', req.sessionID);
+  console.log('Session Data:', req.session);
+  next();
+});
+
+
+
 // Use the guest routes
 app.use('/data', guestRoute);
 
@@ -56,7 +60,7 @@ app.use('/', loginRoute);
 // Use the dashboard routes
 app.use('/adm', dashboardRoute);
 
-// Tentukan lokasi folder views
+// Set the location of the views folder
 const viewsDirectories = [
   path.join(__dirname, 'views')
 ];

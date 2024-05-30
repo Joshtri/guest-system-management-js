@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Detail Data Tamu</title>
+</head>
+<body>
+  <%-include('partials/header.ejs'); %>
+  <div class="container mt-3">
+    <a href="/data/guests" class="btn btn-secondary">Kembali</a>
+    <hr>
+    <h1>Detail Tamu</h1>
+
+    <p><strong>Nama Lengkap:</strong> <%= guest.nama_lengkap %></p>
+    <p><strong>Asal:</strong> <%= guest.asal %></p>
+    <p><strong>Orang Dituju:</strong> <%= guest.orang_dituju %></p>
+    <p><strong>No Hp:</strong> <%= guest.no_hp %></p>
+
+    <img src="data:image/svg+xml;base64,<%= guest.signature %>">
+
+  </div>
+</body>
+</html>

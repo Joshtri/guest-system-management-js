@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Guest List</title>
+  <link rel="stylesheet" href="//cdn.datatables.net/2.0.7/css/dataTables.dataTables.min.css">
+</head>
+<body>
+  <%-include('partials/header.ejs'); %>
+
+  <main>
+    <section>
+      <div class="container mt-3 col-lg-12">
+        <h1>Data Buku Tamu</h1>
+
+          <table class="" id="guestTable">
+            <thead>
+              <th>No</th>
+              <th>Nama Lengkap</th>
+              <th>Asal</th>
+              <th>Orang Dituju</th>
+              <th>Aksi</th>
+            </thead>
+            <tbody>
+              <% guests.forEach((item, index) => { %>
+                <tr>
+                  <td><%= index + 1 %></td> <!-- Use index to display item number -->
+                  <td><%= item.nama_lengkap %></td>
+                  <td><%= item.asal %></td>
+                  <td><%= item.orang_dituju %></td>
+                  <td>
+                    <a href="/data/guests/<%= item.id %>"><i data-lucide="view"></i></a>
+                    <!-- <a href="#"><i data-lucide="trash-2"></i></a> -->
+                  </td>
+                </tr>
+              <% }) %>
+              
+            </tbody>
+          </table>
+
+      </div>
+    </section>
+  </main>
+
+
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+
+  <script src="//cdn.datatables.net/2.0.7/js/dataTables.min.js"></script>
+  <script src="https://unpkg.com/lucide@latest"></script>
+  <script>
+    lucide.createIcons();
+  
+    $(document).ready(function() {
+      $('#guestTable').DataTable({
+        // Set the length menu to allow the user to select how many entries to show
+        lengthMenu: [ [10, 25, 50, -1], [10, 25, 50, "All"] ],
+        
+        // Enable sorting on all columns
+        ordering: true,
+        
+        // Enable pagination
+        paging: true,
+        
+        // Set the default number of entries to display per page
+        pageLength: 5,
+        
+        // Enable searching/filtering
+        searching: true,
+        
+
+        
+        // Enable responsive design for the table
+        responsive: true
+      });
+    });
+  </script>
+  
+  
+  
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
+
+</body>
+</html>

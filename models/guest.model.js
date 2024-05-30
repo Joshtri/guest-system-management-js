@@ -21,9 +21,6 @@ const GuestSchema = new mongoose.Schema({
     type: String, 
     required: true,
   },
-  imageData: {
-    type: String, 
-  },
 
   signature:{
     type: String

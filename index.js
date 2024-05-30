@@ -23,24 +23,27 @@ const app = express();
 // Set EJS as the view engine
 app.set('view engine', 'ejs');
 
-// Middleware to parse JSON requests
-app.use(express.urlencoded({ extended: true }));
-app.use(express.json());
-app.use(bodyParser.json());
-app.use(express.json());
 
+
+app.set('trust proxy', true);
 // 
 // Session middleware with MongoDB
 app.use(session({
+  proxy: true,
   secret: process.env.SESSION_SECRET,
   resave: false,
-  saveUninitialized: false,
+  saveUninitialized: true,
   store: MongoStore.create({
     mongoUrl: process.env.MONGODB_URI, // Replace with your MongoDB connection string
     collectionName: 'sessions'
   })
 }));
 
+// Middleware to parse JSON requests
+app.use(express.urlencoded({ extended: true }));
+app.use(express.json());
+app.use(bodyParser.json());
+app.use(express.json());
 
 // Logging middleware to log session data
 app.use((req, res, next) => {

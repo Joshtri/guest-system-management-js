@@ -29,10 +29,10 @@ app.use(express.json());
 app.use(bodyParser.json());
 app.use(express.json());
 
-// process.env.SESSION_SECRET || 
+// 
 // Session middleware with MongoDB
 app.use(session({
-  secret: 'your-secret-key',
+  secret: process.env.SESSION_SECRET,
   resave: false,
   saveUninitialized: false,
   store: MongoStore.create({
